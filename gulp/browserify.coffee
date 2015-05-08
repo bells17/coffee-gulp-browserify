@@ -6,6 +6,7 @@ uglify = require 'gulp-uglify'
 rename = require 'gulp-rename'
 browserify = require 'gulp-browserify'
 
+dest = './public/js/'
 buildFiles = [
 	'./front/coffee/**/*.coffee'
 	'./front/coffee/*.coffee'
@@ -24,4 +25,4 @@ module.exports = (gulp, env)->
 	  .pipe(gulpif((do env.isRelease), uglify({preserveComments: 'some'})))
 	  .pipe(gulpif((do env.isRelease), sourcemaps.init(loadMaps: true)))
 	  .pipe(gulpif((do env.isRelease), sourcemaps.write('./')))
-	 	.pipe gulp.dest('./public/js/')
+	 	.pipe gulp.dest(dest)
