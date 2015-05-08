@@ -1,26 +1,31 @@
 gulp = require 'gulp'
-recursive = require('recursive-readdir')
+recursive = require 'recursive-readdir'
+
+# set env
+env =
+	env: process.env.NODE_ENV
+	isRelease: ->
+		(@env is 'production')
+
+# require gulp tasks
 gulp.task 'recursiveTask', (callback) ->
   recursive './gulp', (err, files) ->
     files.forEach (path, index, arry) ->
       path = './' + path.replace('\\', '/')
-      require(path) gulp
+      require(path) gulp, env
     do callback
 
-gulp.task 'build-dev', ['recursiveTask'], ->
-	gulp.start [ 'browserify-dev' ]
+# set build task
 gulp.task 'build', ['recursiveTask'], ->
 	gulp.start [ 'browserify' ]
 
+# set watch task
 watchFiles = [
 	'./front/coffee/**/*.coffee'
 	'./front/coffee/*.coffee'
 ]
-
-gulp.task 'watch-dev', ->
-  gulp.watch watchFiles, [ 'build-dev' ]
 gulp.task 'watch', ->
   gulp.watch watchFiles, [ 'build' ]
 
-gulp.task 'default', [ 'build-dev' ]
-gulp.task 'release', [ 'build' ]
+# set default task
+gulp.task 'default', [ 'build' ]

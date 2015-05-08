@@ -14,7 +14,8 @@
     "gulp-browserify": "^0.5.1",
     "coffee-script": "^1.9.2",
     "coffeeify": "^1.1.0",
-    "recursive-readdir": "^1.2.1"
+    "recursive-readdir": "^1.2.1",
+    "gulp-if": "^1.2.5"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
