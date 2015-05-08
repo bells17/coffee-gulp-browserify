@@ -1,57 +1,26 @@
 gulp = require 'gulp'
-sourcemaps = require 'gulp-sourcemaps'
-buffer = require 'vinyl-buffer'
-through = require 'through2'
-uglify = require 'gulp-uglify'
-rename = require 'gulp-rename'
-browserify = require 'gulp-browserify'
+recursive = require('recursive-readdir')
+gulp.task 'recursiveTask', (callback) ->
+  recursive './gulp', (err, files) ->
+    files.forEach (path, index, arry) ->
+      path = './' + path.replace('\\', '/')
+      require(path) gulp
+    do callback
 
-gulp.task 'browserify-dev', ->
-  gulp.src([
-  	'./front/coffee/**/*.coffee'
-  	'./front/coffee/*.coffee'
-  	'!./front/coffee/lib/**/*.coffee'
-  	'!./front/coffee/lib/*.coffee'
-  ], {
-  	read: false
-  })
-  .pipe(browserify(
-    transform: [ 'coffeeify' ]
-    extensions: [ '.coffee' ]))
-  .pipe(rename(extname: '.js'))
-  .pipe(buffer())
-  # .pipe(uglify())
-  .pipe(sourcemaps.init(loadMaps: true))
-  .pipe(sourcemaps.write('./'))
- 	.pipe gulp.dest('./public/js/')
+gulp.task 'build-dev', ['recursiveTask'], ->
+	gulp.start [ 'recursiveTask', 'browserify-dev' ]
+gulp.task 'build', ['recursiveTask'], ->
+	gulp.start [ 'browserify' ]
 
-gulp.task 'browserify', ->
-  gulp.src([
-  	'./front/coffee/**/*.coffee'
-  	'./front/coffee/*.coffee'
-  	'!./front/coffee/lib/**/*.coffee'
-  	'!./front/coffee/lib/*.coffee'
-  ], {
-  	read: false
-  })
-  .pipe(browserify(
-    transform: [ 'coffeeify' ]
-    extensions: [ '.coffee' ]))
-  .pipe(rename(extname: '.js'))
-  .pipe(buffer())
-  .pipe(uglify())
-  .pipe(sourcemaps.init(loadMaps: true))
-  .pipe(sourcemaps.write('./'))
- 	.pipe gulp.dest('./public/js/')
+watchFiles = [
+	'./front/coffee/**/*.coffee'
+	'./front/coffee/*.coffee'
+]
 
 gulp.task 'watch-dev', ->
-  gulp.watch [
-  	'./front/coffee/**/*.coffee'
-  	'./front/coffee/*.coffee'
-  ], [ 'browserify-dev' ]
-
+  gulp.watch watchFiles, [ 'build-dev' ]
 gulp.task 'watch', ->
-  gulp.watch [
-  	'./front/coffee/**/*.coffee'
-  	'./front/coffee/*.coffee'
-  ], [ 'browserify' ]
+  gulp.watch watchFiles, [ 'build' ]
+
+gulp.task 'default', [ 'build-dev' ]
+gulp.task 'release', [ 'build' ]
