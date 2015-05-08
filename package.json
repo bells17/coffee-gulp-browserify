@@ -1,0 +1,23 @@
+{
+  "name": "coffee-gulp-browserify",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "gulp-rename": "^1.2.2",
+    "gulp-sourcemaps": "^1.5.2",
+    "through2": "^0.6.5",
+    "vinyl-buffer": "^1.0.0",
+    "gulp-uglify": "^1.2.0",
+    "gulp": "^3.8.11",
+    "gulp-browserify": "^0.5.1",
+    "coffee-script": "^1.9.2",
+    "coffeeify": "^1.1.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

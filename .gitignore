@@ -1,0 +1,35 @@
+# Created by https://www.gitignore.io
+
+# Mac
+.DS_Store
+
+### Node ###
+# Logs
+logs
+*.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+
+# Grunt intermediate storage (http://gruntjs.com/creating-plugins#storing-task-files)
+.grunt
+
+# node-waf configuration
+.lock-wscript
+
+# Dependency directory
+# https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git
+node_modules
+
+
+
+public/css/*
+public/css/**/*
+!public/css/.gitkeep
+
+
+public/js/*
+public/js/**/*
+!public/js/.gitkeep
