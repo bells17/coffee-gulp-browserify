@@ -8,7 +8,7 @@ gulp.task 'recursiveTask', (callback) ->
     do callback
 
 gulp.task 'build-dev', ['recursiveTask'], ->
-	gulp.start [ 'recursiveTask', 'browserify-dev' ]
+	gulp.start [ 'browserify-dev' ]
 gulp.task 'build', ['recursiveTask'], ->
 	gulp.start [ 'browserify' ]
 
