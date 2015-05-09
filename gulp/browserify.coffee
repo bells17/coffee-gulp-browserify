@@ -4,7 +4,8 @@ buffer = require 'vinyl-buffer'
 through = require 'through2'
 uglify = require 'gulp-uglify'
 rename = require 'gulp-rename'
-browserify = require 'gulp-browserify'
+browserify = require 'browserify'
+through2 = require 'through2'
 
 dest = './public/js/'
 buildFiles = [
@@ -17,9 +18,17 @@ buildFiles = [
 module.exports = (gulp, env)->
 	gulp.task 'browserify', ->
 	  gulp.src(buildFiles, { read: false })
-	  .pipe(browserify(
-	    transform: [ 'coffeeify' ]
-	    extensions: [ '.coffee' ]))
+    .pipe(through2.obj((file, enc, next)->
+	    browserify(file.path,
+	      debug: true
+	      transform: [ 'coffeeify' ]
+	      extensions: [ '.coffee' ]
+	    )
+	    .bundle((err, res)->
+	    	file.contents = res
+	    	next err, file
+	    )
+	  ))
 	  .pipe(rename(extname: '.js'))
 	  .pipe(gulpif((do env.isRelease), buffer()))
 	  .pipe(gulpif((do env.isRelease), uglify({preserveComments: 'some'})))
